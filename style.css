@@ -130,3 +130,376 @@ nav a:hover { color: var(--accent2); }
 .feedback-card h4 {
     color: #00c6ff;
 }
+/* Page load fade-in */
+body {
+  animation: pageFade 0.8s ease both;
+}
+@keyframes pageFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Scroll reveal base */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  transition-delay: var(--delay, 0s);
+  will-change: opacity, transform;
+}
+.reveal.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Optional: left / right variants */
+.reveal.from-left  { transform: translateX(-50px); }
+.reveal.from-right { transform: translateX(50px); }
+.reveal.from-left.show,
+.reveal.from-right.show { transform: translateX(0); }
+
+/* Card hover lift (plan cards, feedback cards) */
+.plan-card, .fb-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.plan-card:hover, .fb-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+}
+
+/* Accessibility: animation venam nu setting vechavangalukku */
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  body { animation: none; }
+}
+/* Hero section ku idhu kandippa venum */
+.hero {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0f0c29, #1a1446 55%, #24243e);
+  color: #fff;
+}
+/* Hero kulla irukkura text/button ellam animation mela theriyum */
+.hero > *:not(.growth-bg) {
+  position: relative;
+  z-index: 2;
+}
+
+.growth-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* Bars */
+.growth-bg .bars {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  gap: 1.2%;
+  padding: 0 2%;
+}
+.growth-bg .bars span {
+  flex: 1;
+  height: var(--h);
+  border-radius: 6px 6px 0 0;
+  background: linear-gradient(to top, rgba(108,61,244,0.55), rgba(0,224,164,0.30));
+  transform: scaleY(0);
+  transform-origin: bottom;
+  animation: barGrow 1.2s cubic-bezier(.2,.8,.2,1) forwards;
+  animation-delay: var(--d);
+}
+@keyframes barGrow {
+  to { transform: scaleY(1); }
+}
+
+/* Profit line + area */
+.growth-bg svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.growth-bg .line {
+  fill: none;
+  stroke: #00e0a4;
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  filter: drop-shadow(0 0 8px rgba(0,224,164,0.8));
+  animation: drawLine 4s ease-out 0.5s forwards;
+}
+@keyframes drawLine {
+  to { stroke-dashoffset: 0; }
+}
+.growth-bg .area {
+  fill: url(#areaGrad);
+  opacity: 0;
+  animation: fadeIn 2s ease 3s forwards;
+}
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+/* Growth badge */
+.growth-badge {
+  position: absolute;
+  top: 18%;
+  right: 6%;
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 18px;
+  color: #00e0a4;
+  background: rgba(0,224,164,0.12);
+  border: 1px solid rgba(0,224,164,0.5);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  transform: translateY(15px);
+  animation: badgeIn 0.8s ease 3.5s forwards;
+}
+@keyframes badgeIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 600px) {
+  .growth-badge { font-size: 14px; top: 10%; right: 4%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .growth-bg .bars span { transform: scaleY(1); animation: none; }
+  .growth-bg .line { stroke-dashoffset: 0; animation: none; }
+  .growth-bg .area, .growth-badge { opacity: 1; transform: none; animation: none; }
+}
+/* ===== PAGE 2 : RISING COINS ===== */
+.plans {
+  position: relative;
+  overflow: hidden;
+}
+.plans > *:not(.coins-bg) {
+  position: relative;
+  z-index: 2;
+}
+
+.coins-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 100%, rgba(0,224,164,0.12), transparent 60%);
+}
+
+.coins-bg .coin,
+.coins-bg .arrow {
+  position: absolute;
+  bottom: -60px;
+  left: var(--x);
+  width: var(--s);
+  height: var(--s);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: calc(var(--s) * 0.55);
+  opacity: 0;
+  animation: riseUp var(--t) linear infinite;
+  animation-delay: var(--d);
+}
+
+.coins-bg .coin {
+  border-radius: 50%;
+  color: #7a5a00;
+  background: radial-gradient(circle at 30% 30%, #ffe27a, #f5b301);
+  box-shadow: 0 0 18px rgba(245,179,1,0.55);
+}
+
+.coins-bg .arrow {
+  color: #00e0a4;
+  font-size: var(--s);
+  text-shadow: 0 0 12px rgba(0,224,164,0.8);
+}
+
+@keyframes riseUp {
+  0%   { transform: translateY(0) rotate(0deg) scale(0.8); opacity: 0; }
+  10%  { opacity: 0.85; }
+  85%  { opacity: 0.85; }
+  100% { transform: translateY(-110vh) rotate(25deg) scale(1.1); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .coins-bg .coin, .coins-bg .arrow { animation: none; opacity: 0.4; bottom: 20%; }
+}
+/* ===== PAGE 3 : CUSTOMER REACH RIPPLE ===== */
+.contact {
+  position: relative;
+  overflow: hidden;
+}
+.contact > *:not(.reach-bg) {
+  position: relative;
+  z-index: 2;
+}
+
+.reach-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.reach-bg .ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 120vmin;
+  height: 120vmin;
+  margin: -60vmin 0 0 -60vmin;
+  border-radius: 50%;
+  border: 2px solid rgba(108,61,244,0.55);
+  box-shadow: 0 0 30px rgba(108,61,244,0.25) inset;
+  transform: scale(0);
+  opacity: 0;
+  animation: ripple 6s ease-out infinite;
+  animation-delay: var(--d, 0s);
+}
+@keyframes ripple {
+  0%   { transform: scale(0.05); opacity: 0.9; }
+  100% { transform: scale(1);    opacity: 0; }
+}
+
+.reach-bg .dot {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #00e0a4;
+  box-shadow: 0 0 14px #00e0a4;
+  transform: scale(0);
+  animation: dotPop 6s ease-in-out infinite;
+  animation-delay: var(--d);
+}
+.reach-bg .dot::after {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 1px solid #00e0a4;
+  animation: dotPulse 2s ease-out infinite;
+}
+@keyframes dotPop {
+  0%, 8%   { transform: scale(0); opacity: 0; }
+  18%, 80% { transform: scale(1); opacity: 1; }
+  100%     { transform: scale(0); opacity: 0; }
+}
+@keyframes dotPulse {
+  0%   { transform: scale(0.6); opacity: 0.9; }
+  100% { transform: scale(2);   opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reach-bg .ring { animation: none; transform: scale(0.5); opacity: 0.3; }
+  .reach-bg .dot { animation: none; transform: scale(1); }
+}
+/* ===== PAGE 4 : TWINKLING STARS + REVIEW BUBBLES ===== */
+.feedback {
+  position: relative;
+  overflow: hidden;
+}
+.feedback > *:not(.stars-bg) {
+  position: relative;
+  z-index: 2;
+}
+
+.stars-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 50%, rgba(245,179,1,0.07), transparent 65%);
+}
+
+/* Twinkling stars */
+.stars-bg .star {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  font-size: var(--s);
+  color: #f5b301;
+  text-shadow: 0 0 14px rgba(245,179,1,0.9);
+  opacity: 0;
+  transform: scale(0) rotate(-40deg);
+  animation: twinkle var(--t) ease-in-out infinite;
+  animation-delay: var(--d);
+}
+@keyframes twinkle {
+  0%   { opacity: 0;    transform: scale(0)   rotate(-40deg); }
+  20%  { opacity: 1;    transform: scale(1.25) rotate(0deg); }
+  35%  { opacity: 0.8;  transform: scale(1)   rotate(10deg); }
+  60%  { opacity: 0.35; transform: scale(0.9) rotate(0deg); }
+  100% { opacity: 0;    transform: scale(0)   rotate(40deg); }
+}
+
+/* Floating review bubbles */
+.stars-bg .bubble {
+  position: absolute;
+  left: var(--x);
+  bottom: -70px;
+  width: 46px;
+  height: 46px;
+  border-radius: 50% 50% 50% 12%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ff5c8a;
+  font-size: 20px;
+  background: rgba(255,92,138,0.12);
+  border: 1px solid rgba(255,92,138,0.5);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  animation: bubbleFloat var(--t) ease-in-out infinite;
+  animation-delay: var(--d);
+}
+@keyframes bubbleFloat {
+  0%   { transform: translate(0, 0) scale(0.7);       opacity: 0; }
+  15%  { opacity: 0.9; }
+  50%  { transform: translate(25px, -50vh) scale(1);  }
+  85%  { opacity: 0.9; }
+  100% { transform: translate(-15px, -105vh) scale(1.1); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stars-bg .star { animation: none; opacity: 0.5; transform: scale(1); }
+  .stars-bg .bubble { animation: none; opacity: 0.4; bottom: 20%; }
+}
+/* ===== LOGO ===== */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.logo-img {
+  height: 56px;
+  width: auto;
+  background: #fff;
+  padding: 6px 10px;
+  border-radius: 12px;
+  object-fit: contain;
+  box-shadow: 0 0 14px rgba(255, 255, 255, 0.18);
+  transition: transform 0.3s ease;
+}
+.logo:hover .logo-img {
+  transform: scale(1.06) rotate(-3deg);
+}
+
+@media (max-width: 600px) {
+  .logo-img { height: 42px; padding: 4px 8px; }
+}
